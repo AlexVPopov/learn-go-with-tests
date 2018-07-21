@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -29,8 +30,14 @@ func (w *Wallet) Deposit(amount Bitcoin) {
 }
 
 // Withdraw removes bitcoins from the balance of wallet
-func (w *Wallet) Withdraw(amount Bitcoin) {
+func (w *Wallet) Withdraw(amount Bitcoin) error {
+	if amount > w.balance {
+		return errors.New("oh no")
+	}
+
 	w.balance -= amount
+
+	return nil
 }
 
 // Balance returns the number of bitcoins in the wallet

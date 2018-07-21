@@ -23,13 +23,15 @@ func TestArea(t *testing.T) {
 		assertResult(t, got, want)
 	}
 
-	t.Run("rectangles", func(t *testing.T) {
-		rectangle := Rectangle{3.0, 4.0}
-		checkArea(t, rectangle, 12.0)
-	})
+	areaTests := []struct {
+		shape Shape
+		want  float64
+	}{
+		{Rectangle{3.0, 4.0}, 12.0},
+		{Circle{3.0}, 28.274333882308139},
+	}
 
-	t.Run("circles", func(t *testing.T) {
-		circle := Circle{3.0}
-		checkArea(t, circle, 28.274333882308139)
-	})
+	for _, tt := range areaTests {
+		checkArea(t, tt.shape, tt.want)
+	}
 }

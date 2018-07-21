@@ -28,6 +28,11 @@ func (w *Wallet) Deposit(amount Bitcoin) {
 	w.balance += amount
 }
 
+// Withdraw removes bitcoins from the balance of wallet
+func (w *Wallet) Withdraw(amount Bitcoin) {
+	w.balance -= amount
+}
+
 // Balance returns the number of bitcoins in the wallet
 func (w *Wallet) Balance() Bitcoin {
 	return w.balance

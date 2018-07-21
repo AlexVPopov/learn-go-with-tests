@@ -1,9 +1,22 @@
 package main
 
+import (
+	"fmt"
+)
+
 func main() {}
+
+// Stringer stringifies the implementor
+type Stringer interface {
+	String() string
+}
 
 // Bitcoin is a bitcoin
 type Bitcoin int
+
+func (b Bitcoin) String() string {
+	return fmt.Sprintf("%d BTC", b)
+}
 
 // Wallet holds bitcoins
 type Wallet struct {

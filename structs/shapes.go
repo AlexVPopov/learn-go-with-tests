@@ -4,6 +4,11 @@ import "math"
 
 func main() {}
 
+// Shape is an interface for shapes
+type Shape interface {
+	Area() float64
+}
+
 // Rectangle represents the geometrical shape, known as rectangle
 type Rectangle struct {
 	Width  float64

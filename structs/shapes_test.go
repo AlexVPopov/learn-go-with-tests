@@ -9,15 +9,28 @@ func assertResult(t *testing.T, got, want float64) {
 }
 
 func TestPerimeter(t *testing.T) {
-	got := Perimeter(Rectangle{3.0, 4.0})
+	rectangle := Rectangle{3.0, 4.0}
+	got := rectangle.Perimeter()
 	want := 14.0
 
 	assertResult(t, got, want)
 }
 
 func TestArea(t *testing.T) {
-	got := Area(Rectangle{3.0, 4.0})
-	want := 12.0
+	t.Run("rectangles", func(t *testing.T) {
+		rectangle := Rectangle{3.0, 4.0}
+		got := rectangle.Area()
+		want := 12.0
 
-	assertResult(t, got, want)
+		assertResult(t, got, want)
+	})
+
+	t.Run("circles", func(t *testing.T) {
+		circle := Circle{3.0}
+		got := circle.Area()
+		want := 28.274333882308139
+
+		assertResult(t, got, want)
+	})
+
 }

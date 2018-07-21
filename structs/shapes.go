@@ -1,19 +1,31 @@
 package main
 
+import "math"
+
 func main() {}
 
-// Rectangle is a type, representing the geometrical shape, known as rectangle
+// Rectangle represents the geometrical shape, known as rectangle
 type Rectangle struct {
 	Width  float64
 	Height float64
 }
 
-// Perimeter takes the width and height of a rectangle and returns its perimeter
-func Perimeter(rectangle Rectangle) float64 {
-	return 2 * (rectangle.Width + rectangle.Height)
+// Circle represents a circle
+type Circle struct {
+	Radius float64
 }
 
-// Area takes the width and height of a rectangle and returns its area
-func Area(rectangle Rectangle) float64 {
-	return rectangle.Width * rectangle.Height
+// Perimeter returns the perimeter of a rectangle
+func (r Rectangle) Perimeter() float64 {
+	return 2 * (r.Width + r.Height)
+}
+
+// Area returns the area of a rectangle
+func (r Rectangle) Area() float64 {
+	return r.Width * r.Height
+}
+
+// Area returns the area of a circle
+func (c Circle) Area() float64 {
+	return math.Pi * c.Radius * c.Radius
 }

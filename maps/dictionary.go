@@ -12,8 +12,12 @@ func Search(dictionary map[string]string, word string) string {
 // Dictionary is a wrapper around map
 type Dictionary map[string]string
 
-// ErrNotFound is thrown, when a word is not found in the dictionary
-var ErrNotFound = errors.New("could not find the word you were looking for")
+var (
+	// ErrNotFound is thrown, when a word is not found in the dictionary
+	ErrNotFound = errors.New("could not find the word you were looking for")
+	// ErrWordExists is thrown, when adding an existing word to the dictionary
+	ErrWordExists = errors.New("cannot add word, because it already exists")
+)
 
 // Search takes a key and returns the corresponding value from the dictionary
 func (d Dictionary) Search(word string) (string, error) {
@@ -27,6 +31,17 @@ func (d Dictionary) Search(word string) (string, error) {
 }
 
 // Add adds a word and a definition to the dictionary
-func (d Dictionary) Add(word, definition string) {
-	d[word] = definition
+func (d Dictionary) Add(word, definition string) error {
+	_, err := d.Search(word)
+
+	switch err {
+	case ErrNotFound:
+		d[word] = definition
+	case nil:
+		return ErrWordExists
+	default:
+		return err
+	}
+
+	return nil
 }

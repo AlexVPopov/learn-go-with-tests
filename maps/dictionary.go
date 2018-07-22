@@ -22,6 +22,8 @@ const (
 	ErrNotFound = DictionaryErr("could not find the word you were looking for")
 	// ErrWordExists is thrown, when adding an existing word to the dictionary
 	ErrWordExists = DictionaryErr("cannot add word, because it already exists")
+	// ErrWordDoesNotExist is thrown, when trying to update a word, not included in the dictionary
+	ErrWordDoesNotExist = DictionaryErr("cannot update word, because it does not exist")
 )
 
 // Search takes a key and returns the corresponding value from the dictionary
@@ -44,6 +46,21 @@ func (d Dictionary) Add(word, definition string) error {
 		d[word] = definition
 	case nil:
 		return ErrWordExists
+	default:
+		return err
+	}
+
+	return nil
+}
+
+func (d Dictionary) Update(word, definition string) error {
+	_, err := d.Search(word)
+
+	switch err {
+	case ErrNotFound:
+		return ErrWordDoesNotExist
+	case nil:
+		d[word] = definition
 	default:
 		return err
 	}

@@ -1,7 +1,5 @@
 package main
 
-import "errors"
-
 func main() {}
 
 //Search takes a dictionary and a key and returns the value
@@ -12,11 +10,18 @@ func Search(dictionary map[string]string, word string) string {
 // Dictionary is a wrapper around map
 type Dictionary map[string]string
 
-var (
+// DictionaryErr is a template for various dictionary errors
+type DictionaryErr string
+
+func (e DictionaryErr) Error() string {
+	return string(e)
+}
+
+const (
 	// ErrNotFound is thrown, when a word is not found in the dictionary
-	ErrNotFound = errors.New("could not find the word you were looking for")
+	ErrNotFound = DictionaryErr("could not find the word you were looking for")
 	// ErrWordExists is thrown, when adding an existing word to the dictionary
-	ErrWordExists = errors.New("cannot add word, because it already exists")
+	ErrWordExists = DictionaryErr("cannot add word, because it already exists")
 )
 
 // Search takes a key and returns the corresponding value from the dictionary

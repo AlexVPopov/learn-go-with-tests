@@ -6,10 +6,7 @@ func TestSearch(t *testing.T) {
 	dictionary := Dictionary{"test": "this is just a test"}
 
 	t.Run("known word", func(t *testing.T) {
-		given := "test"
-		got, _ := dictionary.Search(given)
-		want := "this is just a test"
-		assertString(t, got, want, given)
+		assertDefinition(t, dictionary, "test", "this is just a test")
 	})
 
 	t.Run("unknown word", func(t *testing.T) {
@@ -21,15 +18,12 @@ func TestSearch(t *testing.T) {
 
 func TestAdd(t *testing.T) {
 	dictionary := Dictionary{}
-	dictionary.Add("test", "this is just a test")
+	word := "test"
+	definition := "this is just a test"
 
-	want := "this is just a test"
-	got, err := dictionary.Search("test")
-	if err != nil {
-		t.Fatal("should find added word:", err)
-	}
+	dictionary.Add(word, definition)
 
-	assertString(t, got, want, "test")
+	assertDefinition(t, dictionary, word, definition)
 }
 
 func assertString(t *testing.T, got, want, given string) {
@@ -38,6 +32,18 @@ func assertString(t *testing.T, got, want, given string) {
 	if got != want {
 		t.Errorf("got '%s', want '%s', given '%s'", got, want, given)
 	}
+}
+
+func assertDefinition(t *testing.T, dictionary Dictionary, word, definition string) {
+	t.Helper()
+
+	got, err := dictionary.Search("test")
+
+	if err != nil {
+		t.Fatal("should find added word:", err)
+	}
+
+	assertString(t, got, definition, word)
 }
 
 func assertError(t *testing.T, got, want error) {

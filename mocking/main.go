@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	Countdown(os.Stdout, &DefaultSleeper{})
+	Countdown(os.Stdout, &ConfigurableSleeper{1 * time.Second, time.Sleep})
 }
 
 const finalWord = "Go!"
@@ -17,14 +17,6 @@ const countdownStart = 3
 // Sleeper adds a delay to execution
 type Sleeper interface {
 	Sleep()
-}
-
-// DefaultSleeper impelments the sleeper interface
-type DefaultSleeper struct{}
-
-// Sleep delays the exection with 1 second
-func (d *DefaultSleeper) Sleep() {
-	time.Sleep(1 * time.Second)
 }
 
 // ConfigurableSleeper allows for setting a custom sleep duration

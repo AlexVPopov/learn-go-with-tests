@@ -7,13 +7,17 @@ import (
 	"time"
 )
 
-func fastReponse(w http.ResponseWriter, r *http.Request) {
+func delayedResponse(w http.ResponseWriter, r *http.Request, delay time.Duration) {
+	time.Sleep(delay)
 	w.WriteHeader(http.StatusOK)
 }
 
+func fastReponse(w http.ResponseWriter, r *http.Request) {
+	delayedResponse(w, r, 0)
+}
+
 func slowResonse(w http.ResponseWriter, r *http.Request) {
-	time.Sleep(20 * time.Millisecond)
-	fastReponse(w, r)
+	delayedResponse(w, r, 20)
 }
 
 func TestRacer(t *testing.T) {

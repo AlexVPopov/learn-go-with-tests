@@ -7,22 +7,20 @@ import (
 	"time"
 )
 
-func delayedResponse(w http.ResponseWriter, r *http.Request, delay time.Duration) {
-	time.Sleep(delay)
-	w.WriteHeader(http.StatusOK)
-}
+func delayedServer(delay time.Duration) *httptest.Server {
+	delayedFunc := func(w http.ResponseWriter, r *http.Request) {
+		time.Sleep(delay)
+		w.WriteHeader(http.StatusOK)
+	}
 
-func fastReponse(w http.ResponseWriter, r *http.Request) {
-	delayedResponse(w, r, 0)
-}
+	handlerFunc := http.HandlerFunc(delayedFunc)
 
-func slowResonse(w http.ResponseWriter, r *http.Request) {
-	delayedResponse(w, r, 20)
+	return httptest.NewServer(handlerFunc)
 }
 
 func TestRacer(t *testing.T) {
-	slowServer := httptest.NewServer(http.HandlerFunc(slowResonse))
-	fastServer := httptest.NewServer(http.HandlerFunc(fastReponse))
+	slowServer := delayedServer(20 * time.Millisecond)
+	fastServer := delayedServer(0 * time.Millisecond)
 
 	slowURL := slowServer.URL
 	fastURL := fastServer.URL

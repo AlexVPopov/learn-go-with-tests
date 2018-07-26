@@ -7,15 +7,18 @@ import (
 	"time"
 )
 
-func TestRacer(t *testing.T) {
-	slowServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		time.Sleep(20 * time.Millisecond)
-		w.WriteHeader(http.StatusOK)
-	}))
+func fastReponse(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
 
-	fastServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-	}))
+func slowResonse(w http.ResponseWriter, r *http.Request) {
+	time.Sleep(20 * time.Millisecond)
+	fastReponse(w, r)
+}
+
+func TestRacer(t *testing.T) {
+	slowServer := httptest.NewServer(http.HandlerFunc(slowResonse))
+	fastServer := httptest.NewServer(http.HandlerFunc(fastReponse))
 
 	slowURL := slowServer.URL
 	fastURL := fastServer.URL
